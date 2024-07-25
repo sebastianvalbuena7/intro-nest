@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseBoolPipe, ParseIntPipe, Patch, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TasksService, User } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { ValidateUserPipe } from './pipes/validate-user/validate-user.pipe';
 
 @Controller('tasks')
 export class TasksController {
@@ -13,7 +14,7 @@ export class TasksController {
         return this.tasksService.getTasks();
     }
 
-    @Get('/:id')
+    @Get('/id/:id')
     getTask(@Param('id') id: string) {
         console.log(id)
         return this.tasksService.getTask(parseInt(id));
@@ -39,5 +40,34 @@ export class TasksController {
     @Patch()
     updateTaskStatus(): string {
         return this.tasksService.patchTask();
+    }
+
+    @Get('ticket/:num')
+    getNumber(@Param('num', ParseIntPipe) num: number): number {
+        return num + 14;
+    }
+
+    @Get('validBool/:bool')
+    getBoolean(@Param('bool', ParseBoolPipe) bool: boolean): boolean {
+        return bool;
+    }
+
+    @Get('greet')
+    // ! Ejemplo con objeto
+    // greet?name=sebas&age=10
+    greet(@Query(ValidateUserPipe) query: { name: string, age: number }) {
+        return `Hello ${query.name}, you are ${query.age}`;
+    }
+
+    @Get('notfound')
+    @HttpCode(404)
+    notFoundPage() {
+        return '404 not found';
+    }
+
+    @Get('serverError')
+    @HttpCode(500)
+    errorPage() {
+        return '404 not found';
     }
 }
