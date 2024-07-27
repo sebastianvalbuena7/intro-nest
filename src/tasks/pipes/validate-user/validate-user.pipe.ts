@@ -3,7 +3,13 @@ import { ArgumentMetadata, HttpException, HttpStatus, Injectable, PipeTransform 
 @Injectable()
 export class ValidateUserPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    const ageNumber = parseInt(value.age.toString(), 10);
+    let ageNumber = 0;
+
+    try {
+      ageNumber = parseInt(value.age.toString(), 10);
+    } catch(error) {
+      ageNumber = 0;
+    }
 
     if (isNaN(ageNumber))
       throw new HttpException('Age must be a number', HttpStatus.BAD_REQUEST);

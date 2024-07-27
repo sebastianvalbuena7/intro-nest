@@ -52,13 +52,6 @@ export class TasksController {
         return bool;
     }
 
-    @Get('greet')
-    // ! Ejemplo con objeto
-    // greet?name=sebas&age=10
-    greet(@Query(ValidateUserPipe) query: { name: string, age: number }) {
-        return `Hello ${query.name}, you are ${query.age}`;
-    }
-
     @Get('notfound')
     @HttpCode(404)
     notFoundPage() {
@@ -68,6 +61,7 @@ export class TasksController {
     @Get('serverError')
     @HttpCode(500)
     errorPage() {
-        return '404 not found';
+        return '404 not found'; 2
+
     }
 }
