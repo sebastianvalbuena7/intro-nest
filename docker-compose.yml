@@ -1,0 +1,11 @@
+version: '4.3'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: sebas
+      POSTGRES_PASSWORD: sebas123
+      POSTGRES_DB: intro_nest
+    ports:
+      - 5432:5432
